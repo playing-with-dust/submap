@@ -66364,23 +66364,24 @@ const dagreD3 = require("dagre-d3")
 const d3 = require("d3")
 const graphlibDot = require("graphlib-dot")
 
-var start_address = ""
 var viz = ""
 
-const startAddr = async () => {
-    start_address = jQuery("#address").val()
-    console.log(start_address)
-    jQuery("#status").html("status: doing stuff")
-    let a = addr.ss58Decode(start_address)	
+const start = async (address) => {
+    jQuery("#status").html("status: reading data...")
+    let a = addr.ss58Decode(address)
     if (!a) {
 	jQuery("#status").html("status: address error")
     } else {
 	jQuery("#addr_icon").empty();
 	jQuery("#addr_icon").append(id.identicon(a, false, 50));
-	viz = await app.vizAddress(-1,0,start_address);
+	viz = await app.vizAddress(-1,0,address);
 	draw(viz);
 	jQuery("#status").html("status: ready")
     }
+}
+
+const startAddr = async () => {
+    start(jQuery("#address").val())
 }
 
 jQuery("#address").change(startAddr);
@@ -66421,7 +66422,8 @@ function draw(viz) {
 const urlParams = new URLSearchParams(window.location.search);
 const address = urlParams.get('address')
 if (address) {
- 
+    jQuery("#address").val(address)
+    start(address);
 }
 
 },{"./address.js":859,"./app.js":861,"./identicon.js":862,"./utils.js":864,"d3":528,"dagre-d3":529,"graphlib-dot":587,"jquery":616}],864:[function(require,module,exports){

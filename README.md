@@ -1,8 +1,8 @@
 # submap
 
-Understanding substrate blockchains with diagrams
+Understanding substrate blockchains with diagrams.
 
-# [Try it here](https://playing-with-dust.github.io/submap/)
+## [Try it here](https://playing-with-dust.github.io/submap/)
  
 ## Building
 
@@ -15,5 +15,4 @@ Understanding substrate blockchains with diagrams
 * Problems -> [Issues](https://github.com/playing-with-dust/submap/issues)
 * Support -> FLzgz4qt5foC1DXRHQQwC2cLwu39eGkhx93x7UsM5uniBvM
 
-x
 
