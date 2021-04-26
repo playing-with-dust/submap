@@ -27,6 +27,15 @@ body {
 	background: #fff;
 }
 
+.status {
+    display: flex;
+    align-items: center;
+}
+
+#status {
+}
+
+
 svg {
   border: 1px solid #999;
   overflow: hidden;

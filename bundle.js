@@ -66100,6 +66100,23 @@ var max_depth = 4;
 var addr_map = {};
 var max_batch_calls = 10;
 
+const linkifyAddress = address => {
+  return "<a href='./index.html?address=" + address + "'>" + address + "</a>";
+};
+
+const timeStampToString = unix_timestamp => {
+  var a = new Date(unix_timestamp * 1000);
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+  return time;
+};
+
 const vizParams = async (id, depth, call_module, call_function, params) => {
   let ret = "";
   let label = "";
@@ -66113,8 +66130,16 @@ const vizParams = async (id, depth, call_module, call_function, params) => {
       for (let call of param.value) {
         if (count < max_batch_calls) {
           ret += await vizBatchCall(id, depth, call);
-          count += 1;
         }
+
+        if (count == max_batch_calls) {
+          let tid = viz_id;
+          viz_id += 1;
+          ret += id + "->" + tid + "\n";
+          ret += tid + " [label=\"Calls truncated...\"]\n";
+        }
+
+        count += 1;
       }
     }
 
@@ -66140,8 +66165,20 @@ const vizParams = async (id, depth, call_module, call_function, params) => {
           addr = ss58Encode(fromHexString(v));
         }
 
-        label += addr + "<br>"; // await vizAddress(id,depth+1,addr)
+        label += linkifyAddress(addr) + "<br>";
       }
+    }
+
+    if ((call_function == "transfer_keep_alive" || call_function == "transfer") && param.name == "dest") {
+      let addr;
+
+      if (param.value.Id) {
+        addr = ss58Encode(fromHexString(param.value.Id));
+      } else {
+        addr = ss58Encode(fromHexString(param.value));
+      }
+
+      label += linkifyAddress(addr) + "<br>";
     }
   }
 
@@ -66156,7 +66193,7 @@ const vizBatchCall = async (parent, depth, call) => {
   let id = viz_id;
   viz_id += 1;
   let ret = "";
-  let label = call.call_module + "/" + call.call_function + "<br>";
+  let label = "<b>" + call.call_module + "/" + call.call_function + "</b><br>";
   let args = call.call_args;
   if (!args) args = call.params;
   let p = await vizParams(id, depth + 1, call.call_module, call.call_function, args);
@@ -66170,7 +66207,7 @@ const vizExtrinsic = async (parent, depth, x) => {
   let id = viz_id;
   viz_id += 1;
   let ret = "";
-  let label = x.call_module + "/" + x.call_module_function + "<br>";
+  let label = "<u>" + timeStampToString(x.block_timestamp) + "</u><br><b>" + x.call_module + "/" + x.call_module_function + "</b><br>";
   let p = await vizParams(id, depth, x.call_module, x.call_module_function, JSON.parse(x.params));
   ret += p.children;
   ret += id + " [labelType=\"html\" label=\"" + label + p.label + "\"]\n";
@@ -66195,8 +66232,7 @@ const vizAddress = async (parent, depth, address) => {
       }
     }
 
-    let label = address;
-    ret += id + " [labelType=\"html\" label=\"" + label + "\"]\n";
+    ret += id + " [labelType=\"html\" label=\"" + linkifyAddress(address) + "\"]\n";
 
     if (parent == -1) {
       return ret;
