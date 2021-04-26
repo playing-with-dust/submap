@@ -1,0 +1,17 @@
+{
+	"name": "submap",
+	"version": "1.0.0",
+	"main": "src/index.js",
+	"license": "GPL3",
+	"dependencies": {
+		"blakejs": "^1.1.0",
+		"bs58": "^4.0.1",
+		"dagre-d3": "^0.6.4",
+		"graphlib-dot": "^0.6.4",
+		"jquery": "^3.6.0"
+	},
+	"devDependencies": {
+		"browserify": "^17.0.0",
+		"esmify": "^2.1.1"
+	}
+}

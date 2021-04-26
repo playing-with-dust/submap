@@ -1,0 +1,58 @@
+body {
+	background: #eee;
+}
+
+.long_name {
+	font-family: monospace, monospace;
+	font-size: 50%;
+}
+
+.short_name {
+	font-size: 150%;
+}
+
+.nomination_percent {
+	font-size: 200%;
+}
+
+.total {
+	font-size: 150%;
+}
+
+.nomination_count {
+}
+
+.nom {
+	border: 1px solid #eee;
+	background: #fff;
+}
+
+svg {
+  border: 1px solid #999;
+  overflow: hidden;
+}
+
+.node {
+  white-space: nowrap;
+}
+
+.node rect,
+.node circle,
+.node ellipse {
+  stroke: #333;
+  fill: #fff;
+  stroke-width: 1.5px;
+}
+
+.cluster rect {
+  stroke: #333;
+  fill: #000;
+  fill-opacity: 0.1;
+  stroke-width: 1.5px;
+}
+
+.edgePath path.path {
+  stroke: #333;
+  stroke-width: 1.5px;
+  fill: none;
+}
