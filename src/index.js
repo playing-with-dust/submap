@@ -58,6 +58,21 @@ function draw(viz) {
     };
     
     d3.select("svg g").call(render, g);
+
+/*
+    // Zoom to fit
+    let width=600
+    let height=800
+    let initialScale=0.5
+    var padding = 20,
+	bBox = inner.node().getBBox(),
+	hRatio = height / (bBox.height + padding),
+	wRatio = width / (bBox.width + padding);
+    
+    zoom.translate([(width - bBox.width * initialScale) / 2, padding / 2])
+	.scale(hRatio < wRatio ? hRatio : wRatio)
+	.event(svg);
+*/
 }
 
 

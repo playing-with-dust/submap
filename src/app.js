@@ -25,12 +25,14 @@ const timeStampToString = (unix_timestamp) => {
     return time;
 }
 
+
+
 const vizParams = async (id,depth,call_module,call_function,params) => {
     let ret=""
     let label=""
     for (let param of params) {
 	label+="<small>"+param.name+"</small><br>"
-
+	
 	if ((call_function=="batch" || call_function=="batch_all") &&
 	    param.name=="calls") {
 	    let count = 0
@@ -48,7 +50,8 @@ const vizParams = async (id,depth,call_module,call_function,params) => {
 	    }
 	}
 	
-	if (call_function=="bond" &&
+	if ((call_function=="bond" ||
+	     call_function=="set_controller") &&
 	    param.name=="controller") {
 	    let addr
 	    if (param.value.Id) {
@@ -58,7 +61,26 @@ const vizParams = async (id,depth,call_module,call_function,params) => {
 	    }
 	    ret += await vizAddress(id,depth+1,addr)
 	}
-		
+	
+/*	if (call_function=="bond" &&
+	    param.name=="payee") {
+	    let addr
+	    console.log(param.value)
+	    addr=ss58Encode(fromHexString(param.value.Account))
+	    label += linkifyAddress(addr)+"<br>"
+	}
+*/
+	if (call_function=="add_proxy" &&
+	    param.name=="delegate") {
+	    let addr
+	    if (param.value.Id) {
+		addr=ss58Encode(fromHexString(param.value.Id))
+	    } else {
+		addr=ss58Encode(fromHexString(param.value))
+	    }
+	    label += linkifyAddress(addr)+"<br>"
+	}
+
 	if (call_function=="nominate" &&
 	    param.name=="targets") {
 	    for (let v of param.value) {
@@ -112,9 +134,16 @@ const vizExtrinsic = async (parent,depth,x) => {
     viz_id+=1
     let ret=""
     let label="<u>"+timeStampToString(x.block_timestamp)+"</u><br><b>"+x.call_module+"/"+x.call_module_function+"</b><br>"    
-    let p = await vizParams(id,depth,x.call_module,x.call_module_function,JSON.parse(x.params))
-    ret+=p.children
-    ret+=id+" [labelType=\"html\" label=\""+label+p.label+"\"]\n" 
+    let args = x.call_args    
+    if (!args) args = x.params
+    args = JSON.parse(args)
+    if (args) {
+	let p = await vizParams(id,depth,x.call_module,x.call_module_function,args)
+	ret+=p.children
+	ret+=id+" [labelType=\"html\" label=\""+label+p.label+"\"]\n"
+    } else {
+	ret+=id+" [labelType=\"html\" label=\""+label+"\"]\n"
+    }
     return ret+parent+"->"+id+"\n"
 }
 
