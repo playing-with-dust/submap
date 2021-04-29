@@ -66096,7 +66096,7 @@ const {
 } = require('./utils.js');
 
 var viz_id = 0;
-var max_depth = 4;
+var max_depth = 6;
 var addr_map = {};
 var max_batch_calls = 10;
 
@@ -66130,7 +66130,8 @@ const vizParams = async (id, depth, call_module, call_function, params) => {
       for (let call of param.value) {
         if (count < max_batch_calls) {
           ret += await vizBatchCall(id, depth, call);
-        }
+        } // if we're a validator, this is very boring
+
 
         if (count == max_batch_calls) {
           let tid = viz_id;
@@ -66171,9 +66172,10 @@ const vizParams = async (id, depth, call_module, call_function, params) => {
         addr = ss58Encode(fromHexString(param.value.Id));
       } else {
         addr = ss58Encode(fromHexString(param.value));
-      }
+      } //label += linkifyAddress(addr)+"<br>"
 
-      label += linkifyAddress(addr) + "<br>";
+
+      ret += await vizAddress(id, depth + 1, addr);
     }
 
     if (call_function == "nominate" && param.name == "targets") {
@@ -66482,6 +66484,13 @@ function draw(viz) {
     
     d3.select("svg g").call(render, g);
 
+/*const { width, height } = d3.select("svg g").node().getBBox()
+if (width && height) {
+    const scale = Math.min(svg.clientWidth / width, svg.clientHeight / height) * 0.95
+    zoom.scaleTo(svg, scale)
+    zoom.translateTo(svg, width / 2, height / 2)
+}
+  */  
 /*
     // Zoom to fit
     let width=600

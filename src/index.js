@@ -59,6 +59,13 @@ function draw(viz) {
     
     d3.select("svg g").call(render, g);
 
+/*const { width, height } = d3.select("svg g").node().getBBox()
+if (width && height) {
+    const scale = Math.min(svg.clientWidth / width, svg.clientHeight / height) * 0.95
+    zoom.scaleTo(svg, scale)
+    zoom.translateTo(svg, width / 2, height / 2)
+}
+  */  
 /*
     // Zoom to fit
     let width=600
