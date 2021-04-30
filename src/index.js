@@ -29,8 +29,8 @@ const startAddr = async () => {
 
 jQuery("#address").change(startAddr);
 
-var svg = d3.select("svg"),
-    inner = d3.select("svg g"),
+var svg = d3.select("#mapsvg"),
+    inner = d3.select("#mapsvg g"),
     zoom = d3.zoom().on("zoom", function() {
 	inner.attr("transform", d3.event.transform);
     });
@@ -57,15 +57,18 @@ function draw(viz) {
 	return selection.transition().duration(500);
     };
     
-    d3.select("svg g").call(render, g);
+    d3.select("#mapsvg g").call(render, g);
 
-/*const { width, height } = d3.select("svg g").node().getBBox()
-if (width && height) {
-    const scale = Math.min(svg.clientWidth / width, svg.clientHeight / height) * 0.95
-    zoom.scaleTo(svg, scale)
-    zoom.translateTo(svg, width / 2, height / 2)
-}
-  */  
+    
+    const { width, height } = d3.select("svg g").node().getBBox()
+    console.log([width,height])
+    if (width && height) {
+	let svgn=d3.select("#mapsvg").node()
+	const scale = Math.min(svgn.clientWidth / width, svgn.clientHeight / height) * 0.95
+	zoom.scaleTo(svg, scale)
+	zoom.translateTo(svg, width / 2, height / 2)
+    }
+    
 /*
     // Zoom to fit
     let width=600

@@ -10,24 +10,21 @@
 </head>
 
 <body>
-  <div id="container" class="container" style="width: 100%;">
+  <div id="container" class="container">
     <div class="row">
       <h3>🧭 submap: mapping the substrate</h3>
     </div>
     <div id="top" class="row">
-      <div class="col-xs-12 col-sm-6 col-md-8">
-	<div class="row">
-	  <div id="addr_icon" style="width:70px;"></div>
-	  <input id="address" placeholder="start address" type="text" style="height:50px;" class="col-10"></input>
-	</div>
-      </div>
-      <div class="col-xs-12 col-sm-6 col-md-3 status">
+      <div id="addr_icon" style="width:70px;" class="col-2"></div>
+      <input id="address" placeholder="start address" type="text" style="height:50px;" class="col-10"></input>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 status">
 	<div id="status">status: ready</div>		
       </div>
     </div>
-  </div>
     <div id="viz" class="row">
-      <svg width=100% height=1000>
+      <svg id="mapsvg" width=100% height=600>
 	<g/>
       </svg>
     </div>
@@ -40,8 +37,9 @@
 	is included in a block</a>).
     </p>
     <p>
-      No data is stored or transmitted: <a href="https://github.com/playing-with-dust/submap">GPL3 source code here</a>.
+      No data is stored: <a href="https://github.com/playing-with-dust/submap">GPL3 source code here</a>.
     </p>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
   <script src="bundle.js"></script>
 </body>
