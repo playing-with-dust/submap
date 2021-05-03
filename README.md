@@ -3,7 +3,13 @@
 Understanding substrate blockchains with diagrams.
 
 ## [Try it here](https://playing-with-dust.github.io/submap/)
- 
+
+## Run nominumbers locally
+
+1. [Download the zip](https://github.com/playing-with-dust/submap/archive/refs/heads/production.zip).
+2. Extract to your device.
+3. Point your browser at `submap-production/index.html`.
+
 ## Building
 
     $ npm install
