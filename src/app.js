@@ -138,13 +138,16 @@ const vizExtrinsic = async (parent,depth,x) => {
     let label="<u>"+timeStampToString(x.block_timestamp)+"</u><br><b>"+x.call_module+"/"+x.call_module_function+"</b><br>"    
     let args = x.call_args    
     if (!args) args = x.params
-    args = JSON.parse(args)
-    if (args) {
-	let p = await vizParams(id,depth,x.call_module,x.call_module_function,args)
-	ret+=p.children
-	ret+=id+" [labelType=\"html\" label=\""+label+p.label+"\"]\n"
-    } else {
-	ret+=id+" [labelType=\"html\" label=\""+label+"\"]\n"
+    
+    if (args!="") {
+	args = JSON.parse(args)
+	if (args) {
+	    let p = await vizParams(id,depth,x.call_module,x.call_module_function,args)
+	    ret+=p.children
+	    ret+=id+" [labelType=\"html\" label=\""+label+p.label+"\"]\n"
+	} else {
+	    ret+=id+" [labelType=\"html\" label=\""+label+"\"]\n"
+	}
     }
     return ret+parent+"->"+id+"\n"
 }
